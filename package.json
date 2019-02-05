@@ -1,0 +1,22 @@
+{
+  "name": "lunch-menu-api",
+  "version": "1.0.0",
+  "description": "A lunch menu API.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janilamppu/lunch-menu-api.git"
+  },
+  "author": "Jani Lamppu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janilamppu/lunch-menu-api/issues"
+  },
+  "homepage": "https://github.com/janilamppu/lunch-menu-api#readme",
+  "dependencies": {
+    "axios": "^0.18.0"
+  }
+}
