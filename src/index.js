@@ -10,20 +10,26 @@ const STRINGS_TO_EXCLUDE = config.STRINGS_TO_EXCLUDE;
 exports.getmenu = async function (event, context, callback) {
   const weekday = event.queryStringParameters.text || getCurrentWeekday();
   if (!validateWeekday(weekday)) {
-    const response = {
-      statusCode: 200,
-      body: config.NO_LUNCH_FOR_WEEKDAY_TEXT
-    };
-    callback(null, response);   
-    return; 
+    return returnResponse(callback, 200, config.NO_LUNCH_FOR_WEEKDAY_TEXT);
   }
-
   const lunchMenu = await getLunchMenu();
-  const response = {
-    statusCode: 200,
-    body: createFormattedLunchMenu(lunchMenu[weekday], weekday)
-  };
-  callback(null, response);
+  returnResponse(callback, 200, createFormattedLunchMenu(lunchMenu[weekday], weekday));
+}
+
+function getCurrentWeekday() {
+  return config.WEEKDAYS[moment().format('dddd')];
+}
+
+function validateWeekday(day) {
+  if (day && config.VALID_WEEKDAYS.indexOf(day) == -1) return false;
+  return true;
+}
+
+function returnResponse(callback, statuscode, body) {
+  return callback(null, {
+    statusCode: statuscode,
+    body: body
+  });
 }
 
 async function getLunchMenu() {
@@ -52,16 +58,8 @@ async function getLunchMenu() {
 }
 
 function createFormattedLunchMenu(lunch, weekday) {
+  console.log("LUNCH: " + JSON.stringify(lunch));
   return '```' + weekday + ' ' + lunch.lunchDate + '\r\n• ' + lunch.nonVegetableLunch + '\r\n• ' + lunch.vegetableLunch + '```';
-}
-
-function validateWeekday(day) {
-  if (day && config.VALID_WEEKDAYS.indexOf(day) == -1) return false;
-  return true;
-}
-
-function getCurrentWeekday() {
-  return config.WEEKDAYS[moment().format('dddd')];
 }
 
 function removeUnwantedStringsFromMenu(menu) {
