@@ -1,0 +1,18 @@
+service: lunch-menu-api # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: us-east-2
+  apiKeys:
+    - ${self:provider.stage}-lunch-menu
+
+functions:
+  menuFunction:
+    handler: src/index.getmenu
+    events:
+      - http:
+          path: getmenu
+          method: get
+          private: false
+          cors: true
